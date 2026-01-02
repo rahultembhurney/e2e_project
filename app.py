@@ -1,14 +1,24 @@
-import streamlit as st
+from flask import Flask, render_template, request
 
-st.title("Power Calculator")
-st.write("Enter a number to calculate its square, cube and fifth power")
+app = Flask(__name__)
 
-n = st.number_input("Enter an Integer", value=1, step=1)
+@app.route('/')
+def index():
+    return '''
+    <html>
+    <body>
+        <form action="/greet" method="POST">
+            Enter your name: <input type="text" name="username">
+            <input type="submit" value="submit">
+        </form>
+        </body>
+        </html>
+        '''
 
-square = n**2
-cube = n**3
-fifth_power = n**5
+@app.route('/greet', methods=["POST"])
+def greet():
+    user_input = request.form['username']
+    return f"Hello {user_input}, welcome to the demo"
 
-st.write(f"Square is {square}")
-st.write(f"Cube is {cube}")
-st.write(f"Fifth Power is {fifth_power}")
+if __name__=="__main__":
+    app.run(host='0.0.0.0', port=5000)
